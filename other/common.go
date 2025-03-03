@@ -36,6 +36,16 @@ func download(client *http.Client, req *http.Request, filename string) string {
 	return filename
 }
 
+func filter[T any](items []T, predicate func(T) bool) []T {
+	result := make([]T, 0)
+	for _, s := range items {
+		if predicate(s) {
+			result = append(result, s)
+		}
+	}
+	return result
+}
+
 func bestLink(links []string) string {
 	osSpecificLinks := filter(links, func(s string) bool { return strings.Contains(s, runtime.GOOS) })
 	if len(osSpecificLinks) == 0 {
